@@ -14,13 +14,8 @@ export default function RegistrarTeste() {
     const [resultadoTeste, setResultadoTeste] = useState<ResultadoTeste | ''>('')
     const [mensagem, setMensagem] = useState({ texto: '', tipo: '' })
 
-    useEffect(() => {
-        setIsMounted(true)
-    }, [])
-
-    if (!isMounted) {
-        return null
-    }
+    useEffect(() => { setIsMounted(true) }, [])
+    if (!isMounted) return null
 
     const handleRegistrar = (e: React.FormEvent) => {
         e.preventDefault()
@@ -39,10 +34,7 @@ export default function RegistrarTeste() {
 
         const aeronavesAtualizadas = aeronaves.map(a => {
             if (a.codigo === codigoSelecionado) {
-                return {
-                    ...a,
-                    testes: [...a.testes, novoTeste]
-                }
+                return { ...a, testes: [...a.testes, novoTeste] }
             }
             return a
         })
@@ -55,27 +47,31 @@ export default function RegistrarTeste() {
     }
 
     const totalTestes = aeronaves.reduce((acc, aviao) => acc + aviao.testes.length, 0)
+    const selectClass = "text-black w-full px-4 py-2 border border-black/80 rounded-md outline-none focus:border-gray-500 focus:ring-1 focus:ring-black/50"
+    const labelClass = "block text-sm font-semibold text-slate-700 mb-2"
 
     return (
-        <div className="max-w-6xl mx-auto animate-fade-in">
-            <header className="mb-8 flex justify-between items-end">
+        <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-0 mt-16 lg:mt-0 pb-10">
+
+            <header className="mb-8 flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold text-white">Registrar Teste de Qualidade</h1>
+                    <h1 className="text-2xl sm:text-3xl font-bold text-white">Registrar Teste de Qualidade</h1>
                     <p className="text-slate-100 mt-2">Documente os resultados das avaliações das aeronaves.</p>
                 </div>
-                <div className="text-center text-2xl text-white p-2 font-bold bg-gray-500/70 rounded-2xl hover:scale-105 hover:bg-gray-100/30 duration-200 cursor-default">
+                <div className="text-center text-2xl text-white p-2 font-bold bg-gray-500/70 rounded-2xl hover:scale-105 hover:bg-gray-100/30 duration-200 cursor-default self-start sm:self-auto">
                     Total Registrado: {totalTestes}
                 </div>
             </header>
 
-            <form onSubmit={handleRegistrar} className="bg-white p-8 rounded-xl shadow-sm border border-slate-200">
+            <form onSubmit={handleRegistrar} className="bg-white p-5 sm:p-8 rounded-xl shadow-sm border border-slate-200">
+
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                     <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">Aeronave Avaliada</label>
-                        <select 
+                        <label className={labelClass}>Aeronave Avaliada</label>
+                        <select
                             value={codigoSelecionado}
                             onChange={(e) => setCodigoSelecionado(e.target.value)}
-                            className="text-black px-4 py-2 border border-black/80 rounded-md outline-none focus:border-gray-500 focus:ring-1 focus:ring-black/50"
+                            className={selectClass}
                         >
                             <option value="">-- Selecione --</option>
                             {aeronaves.map(a => (
@@ -87,30 +83,31 @@ export default function RegistrarTeste() {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">Tipo de Avaliação</label>
-                        <select value={tipoTeste}
+                        <label className={labelClass}>Tipo de Avaliação</label>
+                        <select
+                            value={tipoTeste}
                             onChange={(e) => setTipoTeste(e.target.value as TipoTeste)}
-                            className="text-black px-4 py-2 border border-black/80 rounded-md outline-none focus:border-gray-500 focus:ring-1 focus:ring-black/50"
+                            className={selectClass}
                         >
                             <option value="">-- Selecione o Teste --</option>
                             <option value={TipoTeste.AERODINAMICO}>Teste Aerodinâmico</option>
                             <option value={TipoTeste.ELETRICO}>Teste Elétrico</option>
-                            <option value={TipoTeste.HIDRAULICO}>Teste Hidraulico</option>
+                            <option value={TipoTeste.HIDRAULICO}>Teste Hidráulico</option>
                         </select>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">Resultado Final</label>
-                        <select value={resultadoTeste}
+                        <label className={labelClass}>Resultado Final</label>
+                        <select
+                            value={resultadoTeste}
                             onChange={(e) => setResultadoTeste(e.target.value as ResultadoTeste)}
-                            className="text-black px-4 py-2 border border-black/80 rounded-md outline-none focus:border-gray-500 focus:ring-1 focus:ring-black/50"
+                            className={selectClass}
                         >
                             <option value="">-- Veredito --</option>
                             <option value={ResultadoTeste.APROVADO}>Aprovado</option>
                             <option value="REPROVADO">Reprovado</option>
                         </select>
                     </div>
-
                 </div>
 
                 {mensagem.texto && (
@@ -118,9 +115,12 @@ export default function RegistrarTeste() {
                         {mensagem.texto}
                     </div>
                 )}
-                
-                <div className="flex justify-end gap-4 border-t border-slate-700 pt-6 mt-2">
-                    <button type="submit" className="px-6 py-2 hover:scale-102 duration-200 bg-lime-600 hover:bg-lime-700 text-white rounded-lg font-medium shadow-md transition">
+
+                <div className="flex justify-end border-t border-slate-700 pt-6 mt-2">
+                    <button
+                        type="submit"
+                        className="w-full sm:w-auto px-6 py-2 hover:scale-102 duration-200 bg-lime-600 hover:bg-lime-700 text-white rounded-lg font-medium shadow-md transition"
+                    >
                         Gravar Teste no Sistema
                     </button>
                 </div>

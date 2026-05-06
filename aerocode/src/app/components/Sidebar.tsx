@@ -71,9 +71,9 @@ export function Sidebar() {
                     className="fixed top-4 left-4 z-50 w-10 h-10 flex flex-col items-center justify-center gap-[6px] bg-blue-950 rounded-lg shadow-lg border border-slate-700"
                     aria-label="Abrir menu"
                 >
-                    <span className={`block w-5 h-0.5 bg-white rounded transition-all duration-300 origin-center ${isOpen ? 'rotate-45 translate-y-[7px]' : ''}`} />
+                    <span className={`block w-5 h-0.5 bg-white rounded transition-all duration-300 origin-center ${isOpen ? 'rotate-45 translate-y-[8px]' : ''}`} />
                     <span className={`block w-5 h-0.5 bg-white rounded transition-all duration-300 ${isOpen ? 'opacity-0 scale-x-0' : ''}`} />
-                    <span className={`block w-5 h-0.5 bg-white rounded transition-all duration-300 origin-center ${isOpen ? '-rotate-45 -translate-y-[7px]' : ''}`} />
+                    <span className={`block w-5 h-0.5 bg-white rounded transition-all duration-300 origin-center ${isOpen ? '-rotate-45 -translate-y-[8px]' : ''}`} />
                 </button>
             )}
 
@@ -95,9 +95,6 @@ export function Sidebar() {
             >
                 {/* Logo */}
                 <div className="flex flex-col items-center mb-8 mt-6 bg-[url('/img/fundo.jpg')] rounded-4xl bg-cover bg-center bg-no-repeat">
-                    {/* <div className="relative w-60 h-35 mb-3">
-                        <Image src="/img/aerocodeLOGO.png" alt="Logo" fill className="object-contain opacity-90" />
-                    </div> */}
                     <h2 className="text-lg font-bold tracking-widest text-white">AEROCODE</h2>
                 </div>
 

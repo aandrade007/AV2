@@ -8,18 +8,51 @@ export default function ListarAeronaves() {
     const [aeronaves] = useLocalStorage<Aeronave[]>('aerocode_aeronaves', mockAeronaves)
 
     return (
-        <div className="max-w-6xl mx-auto animate-fade-in">
-            <header className="mb-8 flex justify-between items-end">
+        <div className="max-w-6xl mx-auto animate-fade-in px-4 sm:px-6 lg:px-0 mt-16 lg:mt-0 pb-10">
+
+            <header className="mb-8 flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold text-white">Aeronaves Registradas</h1>
+                    <h1 className="text-2xl sm:text-3xl font-bold text-white">Aeronaves Registradas</h1>
                     <p className="text-slate-100 mt-2">Lista completa em produção e finalizada.</p>
                 </div>
-                <div className="text-center text-2xl text-white p-2 font-bold bg-gray-500/70 rounded-2xl hover:scale-105 hover:bg-gray-100/30 duration-200">
-                        Total: {aeronaves.length}
-                    </div>
+                <div className="text-center text-2xl text-white p-2 font-bold bg-gray-500/70 rounded-2xl hover:scale-105 hover:bg-gray-100/30 duration-200 self-start sm:self-auto">
+                    Total: {aeronaves.length}
+                </div>
             </header>
 
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div className="flex flex-col gap-3 md:hidden">
+                {aeronaves.length === 0 ? (
+                    <div className="p-8 text-center text-slate-100 bg-white rounded-xl">
+                        Nenhuma aeronave encontrada no sistema.
+                    </div>
+                ) : (
+                    aeronaves.map((aviao) => (
+                        <div key={aviao.codigo} className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex flex-col gap-3">
+
+                            <div className="flex justify-between items-center">
+                                <span className="font-bold text-slate-800 text-lg">{aviao.codigo}</span>
+                                <span className={`px-2 py-1 rounded-full text-xs font-bold ${
+                                    aviao.tipo === 'COMERCIAL'
+                                    ? 'bg-emerald-100 text-emerald-700'
+                                    : 'bg-amber-100 text-amber-700'
+                                }`}>
+                                    {aviao.tipo}
+                                </span>
+                            </div>
+
+                            <p className="text-slate-600 text-sm">{aviao.modelo}</p>
+
+                            <div className="flex gap-4 text-xs text-slate-500 border-t border-slate-100 pt-3">
+                                <span>{aviao.capacidade} pessoa(s)</span>
+                                <span>{aviao.alcance} km</span>
+                                <span>{aviao.etapas.length} etapa(s)</span>
+                            </div>
+                        </div>
+                    ))
+                )}
+            </div>
+
+            <div className="hidden md:block bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                         <thead>
@@ -46,8 +79,8 @@ export default function ListarAeronaves() {
                                         <td className="p-4 text-slate-600">{aviao.modelo}</td>
                                         <td className="p-4">
                                             <span className={`px-2 py-1 rounded-full text-xs font-bold ${
-                                                aviao.tipo === 'COMERCIAL' 
-                                                ? 'bg-emerald-100 text-emerald-700' 
+                                                aviao.tipo === 'COMERCIAL'
+                                                ? 'bg-emerald-100 text-emerald-700'
                                                 : 'bg-amber-100 text-amber-700'
                                             }`}>
                                                 {aviao.tipo}
@@ -55,9 +88,7 @@ export default function ListarAeronaves() {
                                         </td>
                                         <td className="p-4 text-slate-600">{aviao.capacidade} pessoa(s)</td>
                                         <td className="p-4 text-slate-600">{aviao.alcance} km</td>
-                                        <td className="p-4 text-slate-600">
-                                            {aviao.etapas.length} etapa(s)
-                                        </td>
+                                        <td className="p-4 text-slate-600">{aviao.etapas.length} etapa(s)</td>
                                     </tr>
                                 ))
                             )}
