@@ -13,7 +13,6 @@ export default function DashboardInicial() {
     // 2. Usando o nosso Custom Hook para puxar as aeronaves salvas (ou os mocks)
     const [aeronaves] = useLocalStorage<Aeronave[]>('aerocode_aeronaves', mockAeronaves)
 
-    // 3. Efeito para ler o usuário do localStorage assim que a tela carregar
     useEffect(() => {
         const sessao = localStorage.getItem('aerocode_sessao')
         if (sessao) {
@@ -32,7 +31,7 @@ export default function DashboardInicial() {
 
     return (
         <div className="flex flex-col gap-6 animate-fade-in">
-            {/* Cabeçalho de Boas-vindas */}
+
             <header className="bg-white p-8 rounded-xl shadow-sm border border-slate-200">
                 <h1 className="text-3xl font-bold text-slate-800">
                     Bem-vindo(a), {usuario.nome}!
@@ -43,8 +42,7 @@ export default function DashboardInicial() {
             </header>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                
-                {/* Card 1: Aeronaves */}
+
                 <div className="bg-gray-50 p-6 rounded-xl hover:scale-102 duration-200 border-l-6 border-l-blue-500">
                     <div className="flex items-center justify-between">
                         <h3 className="text-slate-500 text-sm font-bold uppercase tracking-wider">Aeronaves Registradas</h3>
@@ -52,7 +50,6 @@ export default function DashboardInicial() {
                     <p className="text-4xl font-black text-slate-800 mt-4">{aeronaves.length}</p>
                 </div>
 
-                {/* Card 2: Peças */}
                 <div className="bg-gray-50 p-6 rounded-xl hover:scale-102 duration-200 border-l-6 border-l-green-500">
                     <div className="flex items-center justify-between">
                         <h3 className="text-slate-500 text-sm font-bold uppercase tracking-wider">Peças em Estoque/Uso</h3>
@@ -60,7 +57,6 @@ export default function DashboardInicial() {
                     <p className="text-4xl font-black text-slate-800 mt-4">{totalPecas}</p>
                 </div>
 
-                {/* Card 3: Etapas */}
                 <div className="bg-gray-50 p-6 rounded-xl hover:scale-102 duration-200 border-l-6 border-l-red-500">
                     <div className="flex items-center justify-between">
                         <h3 className="text-slate-500 text-sm font-bold uppercase tracking-wider">Etapas de Produção</h3>
@@ -70,7 +66,6 @@ export default function DashboardInicial() {
 
             </div>
 
-            {/* Seção de Informações Adicionais */}
             <div className="bg-gray-100 p-8 rounded-xl shadow-sm border border-gray-400 mt-4">
                 <h2 className="text-xl font-bold text-slate-800 mb-4">Avisos do Sistema</h2>
                 <div className="p-4 bg-indigo-50 text-indigo-800 rounded-lg border border-indigo-100">

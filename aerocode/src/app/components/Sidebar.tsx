@@ -5,7 +5,23 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Funcionario } from '../models/Funcionario';
 import { NivelPermissao } from '../enums/enums';
-import { LogOut } from 'lucide-react';
+import { 
+    LogOut, 
+    LayoutDashboard, 
+    Users, 
+    Plane, 
+    ListChecks, 
+    ClipboardCheck, 
+    FileText, 
+    PlaneTakeoff, 
+    Cog,
+    Component,
+    RefreshCw, 
+    Kanban, 
+    Link as LinkIcon, 
+    UserPlus, 
+    UserX 
+} from 'lucide-react';
 
 export function Sidebar() {
     const [usuario, setUsuario] = useState<Funcionario | null>(null);
@@ -63,12 +79,12 @@ export function Sidebar() {
 
     return (
         <>
-            {/* Botão Hambúrguer */}
+            {/* Botão Hambúrguer - Adicionado print:hidden */}
             {isMobile && (
                 <button
                     id="hamburger-btn"
                     onClick={() => setIsOpen(!isOpen)}
-                    className="fixed top-4 left-4 z-50 w-10 h-10 flex flex-col items-center justify-center gap-[6px] bg-blue-950 rounded-lg shadow-lg border border-slate-700"
+                    className="fixed top-4 left-4 z-50 w-10 h-10 flex flex-col items-center justify-center gap-[6px] bg-blue-950 rounded-lg shadow-lg border border-slate-700 print:hidden"
                     aria-label="Abrir menu"
                 >
                     <span className={`block w-5 h-0.5 bg-white rounded transition-all duration-300 origin-center ${isOpen ? 'rotate-45 translate-y-[8px]' : ''}`} />
@@ -79,10 +95,10 @@ export function Sidebar() {
 
             {/* Overlay */}
             {isMobile && isOpen && (
-                <div onClick={() => setIsOpen(false)} className="fixed inset-0 bg-black/60 z-30" />
+                <div onClick={() => setIsOpen(false)} className="fixed inset-0 bg-black/60 z-30 print:hidden" />
             )}
 
-            {/* Sidebar */}
+            {/* Sidebar - Adicionado print:hidden */}
             <aside
                 id="sidebar"
                 className={`
@@ -90,6 +106,8 @@ export function Sidebar() {
                     w-72 bg-blue-950 text-slate-300
                     flex flex-col p-4 shadow-2xl overflow-y-auto
                     transition-transform duration-300 ease-in-out
+                    [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]
+                    print:hidden
                     ${sidebarVisible ? 'translate-x-0' : '-translate-x-full'}
                 `}
             >
@@ -104,16 +122,17 @@ export function Sidebar() {
                     <p className="text-[11px] font-bold uppercase text-slate-400 mb-2 mt-4 ml-2 tracking-wider">Geral</p>
 
                     {[
-                        { icon: '📊', label: 'Dashboard',                  href: '/dashboard' },
-                        { icon: '👥', label: 'Listar Funcionários',         href: '/dashboard/listar-funcionarios' },
-                        { icon: '✈️', label: 'Listar Aeronaves',            href: '/dashboard/listar-aeronaves' },
-                        { icon: '📋', label: 'Listar Etapas da Aeronave',  href: '/dashboard/listar-etapas' },
-                        { icon: '📝', label: 'Registrar Teste',             href: '/dashboard/registrar-teste' },
-                        { icon: '📄', label: 'Gerar Relatório Final',       href: '/dashboard/relatorios' },
+                        { icon: <LayoutDashboard size={18} />, label: 'Dashboard',                  href: '/dashboard' },
+                        { icon: <Users size={18} />,           label: 'Listar Funcionários',        href: '/dashboard/listar-funcionarios' },
+                        { icon: <Plane size={18} />,           label: 'Listar Aeronaves',           href: '/dashboard/listar-aeronaves' },
+                        { icon: <ListChecks size={18} />,   label: 'Listar de Peças',      href: '/dashboard/listar-pecas' },
+                        { icon: <ListChecks size={18} />,      label: 'Listar Etapas da Aeronave',  href: '/dashboard/listar-etapas' },
+                        { icon: <ClipboardCheck size={18} />,  label: 'Registrar Teste',            href: '/dashboard/registrar-teste' },
+                        { icon: <FileText size={18} />,        label: 'Gerar Relatório Final',      href: '/dashboard/relatorios' },
                     ].map(({ icon, label, href }) => (
                         <Link key={label} href={href} onClick={() => setIsOpen(false)}
                             className={`${linkBase} hover:bg-amber-50/20 hover:text-white`}>
-                            {icon} {label}
+                            {icon} <span>{label}</span>
                         </Link>
                     ))}
 
@@ -121,15 +140,15 @@ export function Sidebar() {
                         <>
                             <p className="text-[11px] font-bold uppercase text-blue-500 mb-2 mt-6 ml-2 tracking-wider">Produção</p>
                             {[
-                                { icon: '➕', label: 'Cadastrar Aeronave',        href: '/dashboard/cadastrar-aeronave' },
-                                { icon: '⚙️', label: 'Cadastrar Peça',            href: '/dashboard/cadastrar-peca' },
-                                { icon: '🔄', label: 'Atualizar Status da Peça', href: '/dashboard/atualizar-peca' },
-                                { icon: '🏗️', label: 'Gerenciar Etapas',          href: '/dashboard/gerenciar-etapas' },
-                                { icon: '🔗', label: 'Associar Func. à Etapa',   href: '/dashboard/associar-funcionario' },
+                                { icon: <PlaneTakeoff size={18} />, label: 'Cadastrar Aeronave',       href: '/dashboard/cadastrar-aeronave' },
+                                { icon: <Cog size={18} />,          label: 'Cadastrar Peça',           href: '/dashboard/cadastrar-peca' },
+                                { icon: <RefreshCw size={18} />,    label: 'Atualizar Status da Peça', href: '/dashboard/atualizar-peca' },
+                                { icon: <Kanban size={18} />,       label: 'Gerenciar Etapas',         href: '/dashboard/gerenciar-etapas' },
+                                { icon: <LinkIcon size={18} />,     label: 'Associar Func. à Etapa',   href: '/dashboard/associar-funcionario' },
                             ].map(({ icon, label, href }) => (
                                 <Link key={label} href={href} onClick={() => setIsOpen(false)}
                                     className={`${linkBase} hover:bg-blue-900/30 hover:text-blue-400`}>
-                                    {icon} {label}
+                                    {icon} <span>{label}</span>
                                 </Link>
                             ))}
                         </>
@@ -139,12 +158,12 @@ export function Sidebar() {
                         <>
                             <p className="text-[11px] font-bold uppercase text-green-500/70 mb-2 mt-6 ml-2 tracking-wider">Administração</p>
                             {[
-                                { icon: '➕', label: 'Cadastrar Funcionário', href: '/dashboard/cadastrar-funcionario' },
-                                { icon: '🗑️', label: 'Excluir Funcionário',   href: '/dashboard/excluir-funcionario' },
+                                { icon: <UserPlus size={18} />, label: 'Cadastrar Funcionário', href: '/dashboard/cadastrar-funcionario' },
+                                { icon: <UserX size={18} />,    label: 'Desativar Funcionário',   href: '/dashboard/desativar-funcionario' },
                             ].map(({ icon, label, href }) => (
                                 <Link key={label} href={href} onClick={() => setIsOpen(false)}
                                     className={`${linkBase} hover:bg-green-900/30 hover:text-green-400`}>
-                                    {icon} {label}
+                                    {icon} <span>{label}</span>
                                 </Link>
                             ))}
                         </>

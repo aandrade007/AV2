@@ -1,22 +1,40 @@
 'use client'
+
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 import { Funcionario } from '../../models/Funcionario'
 import { NivelPermissao } from '../../enums/enums'
 import { mockFuncionarios } from '../../mocks/dadosIniciais'
 
-
 export default function CadastrarFuncionario() {
+    const router = useRouter()
+    const [isMounted, setIsMounted] = useState(false)
     const [funcionarios, setFuncionarios] = useLocalStorage<Funcionario[]>('aerocode_funcionarios', mockFuncionarios)
+    
     const [nome, setNome] = useState('')
     const [usuario, setUsuario] = useState('')
     const [senha, setSenha] = useState('')
     const [telefone, setTelefone] = useState('')
     const [endereco, setEndereco] = useState('')
     const [nivelPermissao, setNivelPermissao] = useState<NivelPermissao>(NivelPermissao.OPERADOR)
+    
     const [mensagem, setMensagem] = useState({ texto: '', tipo: '' })
-    const router = useRouter()
+
+    useEffect(() => {
+        setIsMounted(true)
+        const sessao = localStorage.getItem('aerocode_sessao')
+        if (sessao) {
+            const usuarioLogado = JSON.parse(sessao)
+            if (usuarioLogado.nivelPermissao !== 'ADMINISTRADOR') {
+                router.push('/dashboard')
+            }
+        } else {
+            router.push('/')
+        }
+    }, [router])
+
+    if (!isMounted) return null
 
     const handleSalvar = (e: React.FormEvent) => {
         e.preventDefault()
@@ -45,7 +63,7 @@ export default function CadastrarFuncionario() {
 
         setFuncionarios([...funcionarios, novoFuncionario])
         
-        setMensagem({ texto: 'Funcionário cadastrado com sucesso! 👤', tipo: 'sucesso' })
+        setMensagem({ texto: 'Funcionário cadastrado com sucesso!', tipo: 'sucesso' })
         setNome('')
         setUsuario('')
         setSenha('')
@@ -58,6 +76,7 @@ export default function CadastrarFuncionario() {
 
     const inputClass = "text-black w-full px-4 py-2 border border-black rounded-md outline-none focus:border-gray-500 focus:ring-1 focus:ring-black"
     const labelClass = "block text-sm font-semibold text-slate-700 mb-2"
+    const isBotaoDesabilitado = !nome.trim() || !usuario.trim() || !senha.trim() || !telefone.trim() || !endereco.trim()
 
     return (
         <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-0 mt-16 lg:mt-0 pb-10 animate-fade-in">
@@ -144,10 +163,14 @@ export default function CadastrarFuncionario() {
                 )}
 
                 <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 border-t border-slate-100 pt-6 mt-2">
-                    <button type="button" onClick={() => router.push('/dashboard')}className="w-full sm:w-auto px-6 py-2 hover:scale-105 text-slate-600 hover:bg-slate-100 rounded-lg font-medium transition duration-200">
+                    <button type="button" onClick={() => router.push('/dashboard')} className="w-full sm:w-auto px-6 py-2 hover:scale-105 text-slate-600 hover:bg-slate-100 rounded-lg font-medium transition duration-200">
                         Cancelar
                     </button>
-                    <button type="submit" className="w-full sm:w-auto px-6 py-2 hover:scale-105 duration-200 bg-lime-600 hover:bg-lime-700 text-white rounded-lg font-medium shadow-md transition">
+                    <button 
+                        type="submit" 
+                        disabled={isBotaoDesabilitado}
+                        className="w-full sm:w-auto px-6 py-2 hover:scale-105 duration-200 bg-lime-600 hover:bg-lime-700 text-white rounded-lg font-medium shadow-md transition disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed"
+                    >
                         Salvar Funcionário
                     </button>
                 </div>

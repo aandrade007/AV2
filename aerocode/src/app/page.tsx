@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { mockFuncionarios } from './mocks/dadosIniciais'
+import { Funcionario } from './models/Funcionario'
 
 export default function TelaLogin() {
     const [usuario, setUsuario] = useState('')
@@ -15,9 +16,26 @@ export default function TelaLogin() {
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault()
 
-        const funcionarioEncontrado = mockFuncionarios.find((f) => f.usuario === usuario && f.senha === btoa(senha))
+        if (!usuario.trim() || !senha.trim()) {
+            setErro('Preencha todos os campos!')
+            return
+        }
+
+        const dadosStorage = localStorage.getItem('aerocode_funcionarios')
+        const funcionariosSistema: Funcionario[] = dadosStorage ? JSON.parse(dadosStorage) : mockFuncionarios
+
+        const senhaOfuscada = btoa(senha.trim())
+
+        const funcionarioEncontrado = funcionariosSistema.find(
+            (f) => f.usuario === usuario.trim() && f.senha === senhaOfuscada
+        )
 
         if (funcionarioEncontrado) {
+            if (!funcionarioEncontrado.ativo) {
+                setErro('Acesso negado: Este usuário foi desativado.')
+                return
+            }
+
             localStorage.setItem('aerocode_sessao', JSON.stringify(funcionarioEncontrado))
             setErro('')
             router.push('/dashboard') 

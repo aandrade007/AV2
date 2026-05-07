@@ -1,6 +1,7 @@
 'use client'
+
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 import { Aeronave } from '../../models/Aeronave'
 import { TipoAeronave } from '../../enums/enums'
@@ -15,6 +16,19 @@ export default function CadastrarAeronave() {
     const [alcance, setAlcance] = useState('')
     const [mensagem, setMensagem] = useState({ texto: '', tipo: '' })
     const router = useRouter()
+
+    useEffect(() => {
+        const sessao = localStorage.getItem('aerocode_sessao')
+        if (sessao) {
+            const usuarioLogado = JSON.parse(sessao)
+            if (usuarioLogado.nivelPermissao === 'OPERADOR') {
+                router.push('/dashboard')
+            }
+        } 
+        else {
+            router.push('/')
+        }
+    }, [router])
 
     const handleSalvar = (e: React.FormEvent) => {
         e.preventDefault()
@@ -51,17 +65,17 @@ export default function CadastrarAeronave() {
     }
     const inputClass = "text-black w-full px-4 py-2 border border-black rounded-md outline-none focus:border-gray-500 focus:ring-1 focus:ring-black"
     const labelClass = "block text-sm font-semibold text-slate-700 mb-2"
+    // Validação para desabilitar o botão
+    const isBotaoDesabilitado = !codigo || !modelo || !capacidade || !alcance
 
     return (
         <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-0 mt-16 lg:mt-0 pb-10">
-
             <header className="mb-8">
                 <h1 className="text-2xl sm:text-3xl font-bold text-white">Nova Aeronave</h1>
                 <p className="text-slate-100 mt-2">Cadastre uma nova aeronave preenchendo todos os campos!</p>
             </header>
 
             <form onSubmit={handleSalvar} className="bg-white p-5 sm:p-8 rounded-xl shadow-sm border border-slate-200">
-
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
                     <div>
                         <label className={labelClass}>Código Único (Ex: AC-777)</label>
@@ -130,7 +144,11 @@ export default function CadastrarAeronave() {
                     <button type="button" onClick={() => router.push('/dashboard')} className="w-full sm:w-auto px-6 py-2 hover:scale-102 text-slate-600 hover:bg-mist-200 rounded-lg font-medium transition">
                         Cancelar
                     </button>
-                    <button type="submit" className="w-full sm:w-auto px-6 py-2 hover:scale-102 duration-200 bg-lime-600 hover:bg-lime-700 text-white rounded-lg font-medium shadow-md transition">
+                    <button 
+                        type="submit" 
+                        disabled={isBotaoDesabilitado}
+                        className="w-full sm:w-auto px-6 py-2 hover:scale-102 duration-200 bg-lime-600 hover:bg-lime-700 text-white rounded-lg font-medium shadow-md transition disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed"
+                    >
                         Salvar Aeronave
                     </button>
                 </div>
