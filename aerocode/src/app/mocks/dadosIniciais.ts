@@ -9,7 +9,7 @@ import {
     TipoTeste, 
     ResultadoTeste 
 } from '../enums/enums';
-//os dados mokados são para ter alguns dados fixo assim que entrar no sistema! :)
+//os dados mokados são para ter alguns dados fixos assim que entrar no sistema! :)
 export const mockFuncionarios: Funcionario[] = [
     {
         id: "550e8400-e29b-41d4-a716-446655440000",
