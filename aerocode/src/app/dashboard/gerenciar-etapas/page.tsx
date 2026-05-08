@@ -136,7 +136,7 @@ export default function GerenciarEtapas() {
                             </div>
                         )}
 
-                        <button type="submit" disabled={isBotaoDesabilitado} className="w-full mt-6 px-6 py-3 hover:scale-[1.02] duration-200 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium shadow-md transition disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed">
+                        <button type="submit" disabled={isBotaoDesabilitado} className="w-full mt-6 px-6 py-3 hover:scale-[1.02] duration-200 bg-lime-600 hover:bg-lime-700 text-white rounded-lg font-medium shadow-md transition disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed">
                             Adicionar Etapa à Linha
                         </button>
                     </form>
@@ -147,11 +147,11 @@ export default function GerenciarEtapas() {
                     
                     {!codigoAeronave ? (
                         <div className="flex-1 flex flex-col items-center justify-center text-slate-400 opacity-60 min-h-[200px]">
-                            <span className="text-4xl mb-2">✈️</span><p className="text-sm font-medium">Selecione uma aeronave</p>
+                            <p className="text-sm font-medium">Selecione uma aeronave</p>
                         </div>
                     ) : etapasDaAeronave.length === 0 ? (
                         <div className="flex-1 flex flex-col items-center justify-center text-amber-500/80 min-h-[200px]">
-                            <span className="text-4xl mb-2">🚧</span><p className="text-sm font-medium text-amber-700">Nenhuma etapa definida.</p>
+                            <p className="text-sm font-medium text-amber-700">Nenhuma etapa definida.</p>
                         </div>
                     ) : (
                         <div className="flex flex-col gap-3 overflow-y-auto max-h-[400px] pr-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar-thumb]:rounded-full">

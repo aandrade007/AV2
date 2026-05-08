@@ -159,7 +159,7 @@ export function Sidebar() {
                             <p className="text-[11px] font-bold uppercase text-green-500/70 mb-2 mt-6 ml-2 tracking-wider">Administração</p>
                             {[
                                 { icon: <UserPlus size={18} />, label: 'Cadastrar Funcionário', href: '/dashboard/cadastrar-funcionario' },
-                                { icon: <UserX size={18} />,    label: 'Desativar Funcionário',   href: '/dashboard/desativar-funcionario' },
+                                
                             ].map(({ icon, label, href }) => (
                                 <Link key={label} href={href} onClick={() => setIsOpen(false)}
                                     className={`${linkBase} hover:bg-green-900/30 hover:text-green-400`}>

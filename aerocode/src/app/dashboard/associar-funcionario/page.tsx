@@ -142,11 +142,11 @@ export default function AssociarFuncionarioEtapa() {
                     <h2 className="text-lg font-bold text-slate-800 mb-5 border-b border-slate-200 pb-2">Equipe Alocada</h2>
                     {!nomeEtapa ? (
                         <div className="flex-1 flex flex-col items-center justify-center text-slate-400 opacity-60 min-h-[200px]">
-                            <span className="text-4xl mb-2">👥</span><p className="text-sm font-medium">Selecione uma etapa</p>
+                            <p className="text-sm font-medium">Selecione uma etapa</p>
                         </div>
                     ) : equipeAlocada.length === 0 ? (
                         <div className="flex-1 flex flex-col items-center justify-center text-blue-500/80 min-h-[200px]">
-                            <span className="text-4xl mb-2">🪹</span><p className="text-sm font-medium text-blue-700">Nenhum colaborador alocado.</p>
+                            <p className="text-sm font-medium text-blue-700">Nenhum colaborador alocado.</p>
                         </div>
                     ) : (
                         <div className="flex flex-col gap-3 overflow-y-auto max-h-[400px] pr-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar-thumb]:rounded-full">
