@@ -40,7 +40,7 @@ Abra [http://localhost:3000](http://localhost:3000)
 ## Primeiro Acesso
  
 Utilize as credenciais padrão abaixo para o primeiro login:
-> O sistema já vem com alguns dados montados!
+> O sistema já vem com alguns dados montados e os dados são salvos no **LocalStorage**!
  
 | Campo  | Valor   |
 |--------|---------|
