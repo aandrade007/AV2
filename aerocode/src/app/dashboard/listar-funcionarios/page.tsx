@@ -1,16 +1,17 @@
 'use client'
+
 import { useState, useEffect } from 'react'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 import { Funcionario } from '../../models/Funcionario'
 import { NivelPermissao } from '../../enums/enums'
 import { mockFuncionarios } from '../../mocks/dadosIniciais'
-import { Icon } from 'lucide-react'
-import {Pencil, Trash2} from 'lucide-react'
+import { Pencil, Trash2 } from 'lucide-react'
 
 export default function ListarFuncionarios() {
     const [funcionarios, setFuncionarios] = useLocalStorage<Funcionario[]>('aerocode_funcionarios', mockFuncionarios)
     const [isMounted, setIsMounted] = useState(false)
     const [usuarioLogado, setUsuarioLogado] = useState<Funcionario | null>(null)
+    
     const [modalAberto, setModalAberto] = useState(false)
     const [funcionarioEditando, setFuncionarioEditando] = useState<Funcionario | null>(null)
     const [editNome, setEditNome] = useState('')
@@ -19,8 +20,10 @@ export default function ListarFuncionarios() {
     const [editSenha, setEditSenha] = useState('')
     const [editConfirmarSenha, setEditConfirmarSenha] = useState('')
     const [mensagemModal, setMensagemModal] = useState({ texto: '', tipo: '' })
+    
     const [modalDesativarAberto, setModalDesativarAberto] = useState(false)
     const [funcionarioDesativando, setFuncionarioDesativando] = useState<Funcionario | null>(null)
+    
     const [mensagemPrincipal, setMensagemPrincipal] = useState({ texto: '', tipo: '' })
 
     useEffect(() => {
@@ -103,22 +106,36 @@ export default function ListarFuncionarios() {
 
     const AcoesAdmin = ({ f }: { f: Funcionario }) => {
         if (!isAdmin) return null
-        const ehEuMesmo = usuarioLogado?.id === f.id
+        
+        const eu = usuarioLogado?.id === f.id
+        const isOutroAdmin = f.nivelPermissao === NivelPermissao.ADMINISTRADOR && !eu
+
+        const podeEditar = !isOutroAdmin
+        const podeDesativar = !eu && f.ativo && !isOutroAdmin
+
         return (
             <div className="flex items-center gap-2">
                 <button
-                    onClick={() => abrirModalEditar(f)}
-                    title="Editar funcionário"
-                    className="p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition"
+                    onClick={() => podeEditar && abrirModalEditar(f)}
+                    title={isOutroAdmin ? 'Você não pode editar outro Administrador' : 'Editar funcionário'}
+                    className={`p-1.5 rounded-lg transition ${
+                        !podeEditar
+                            ? 'text-slate-400 cursor-not-allowed'
+                            : 'text-slate-400 hover:text-blue-600 hover:bg-blue-50'
+                    }`}
                 >
                     <Pencil size={18} />
                 </button>
                 <button
-                    onClick={() => !ehEuMesmo && f.ativo && abrirModalDesativar(f)}
-                    title={ehEuMesmo ? 'Você não pode se desativar' : !f.ativo ? 'Já inativo' : 'Desativar funcionário'}
+                    onClick={() => podeDesativar && abrirModalDesativar(f)}
+                    title={
+                        eu ? 'Você não pode se desativar' : 
+                        isOutroAdmin ? 'Você não pode desativar outro Administrador' :
+                        !f.ativo ? 'Já inativo' : 'Desativar funcionário'
+                    }
                     className={`p-1.5 rounded-lg transition ${
-                        ehEuMesmo || !f.ativo
-                            ? 'text-slate-200 cursor-not-allowed'
+                        !podeDesativar
+                            ? 'text-slate-400 cursor-not-allowed'
                             : 'text-slate-400 hover:text-red-600 hover:bg-red-50'
                     }`}
                 >
@@ -141,7 +158,6 @@ export default function ListarFuncionarios() {
                 </div>
             </header>
 
-            {/* Mensagem de feedback */}
             {mensagemPrincipal.texto && (
                 <div className={`p-4 mb-4 rounded-lg font-medium text-sm ${mensagemPrincipal.tipo === 'erro' ? 'bg-red-50 text-red-600 border border-red-200' : 'bg-emerald-50 text-emerald-600 border border-emerald-200'}`}>
                     {mensagemPrincipal.texto}
@@ -299,7 +315,6 @@ export default function ListarFuncionarios() {
                 </div>
             )}
 
-            {/* ── Modal de Confirmação de Desativação ── */}
             {modalDesativarAberto && funcionarioDesativando && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60">
                     <div className="bg-white w-full max-w-md rounded-xl shadow-2xl border border-slate-200 p-6">

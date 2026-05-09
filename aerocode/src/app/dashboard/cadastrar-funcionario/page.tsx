@@ -101,7 +101,7 @@ export default function CadastrarFuncionario() {
                     <div>
                         <label className={labelClass}>Telefone</label>
                         <input
-                            type="text"
+                            type="number"
                             value={telefone}
                             onChange={(e) => setTelefone(e.target.value)}
                             className={inputClass}
